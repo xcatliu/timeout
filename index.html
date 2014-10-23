@@ -16,6 +16,7 @@ html, body {
     font-size: 14px;
 }
 #start, #clear {
+    padding: 0;
     border: none;
     width: 100%;
     font-size: 8em;
@@ -49,6 +50,7 @@ html, body {
 
 <script>
 
+
 (function(window) {
     var SECOND = 1000;
     function Timeout(option) {
@@ -78,6 +80,8 @@ html, body {
     Timeout.prototype.start = function() {
         var self = this;
         var count = this.time;
+        this.ndAudio.play();
+        this.ndAudio.pause();
         this.interval = window.setInterval(function() {
             count -= 1;
             if (count === 0) {
