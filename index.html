@@ -1,4 +1,108 @@
-Hello World
-<audio src="./d.mp3" controls autoplay loop>
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Timeout for 30 seconds</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+}
+#start, #clear {
+    border: none;
+    width: 100%;
+    font-size: 8em;
+    background: #eee;
+}
+#start {
+    color: #00933B;
+}
+#clear {
+    color: #F90101;
+}
+#time {
+    font-size: 16em;
+    margin: 0 auto;
+    text-align: center;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="controls">
+<button id="start">start</button>
+<button id="clear" style="display:none">clear</button>
+</div>
+<div id="time">30</div>
+<audio id="audio" src="./d.mp3">
 <p>Your browser does not support the audio element.</p>
 </audio>
+
+<script>
+
+(function(window) {
+    var SECOND = 1000;
+    function Timeout(option) {
+        this.time = option.time;
+        this.ndTime = option.ndTime;
+        this.ndAudio = option.ndAudio;
+        this.ndStart = option.ndStart;
+        this.ndClear = option.ndClear;
+        this.init();
+    }
+    Timeout.prototype.init = function() {
+        this.bind();
+    };
+    Timeout.prototype.bind = function() {
+        var self = this;
+        this.ndStart.addEventListener('click', function() {
+            self.ndStart.style.display = 'none';
+            self.ndClear.style.display = 'block';
+            self.start();
+        });
+        this.ndClear.addEventListener('click', function() {
+            self.ndClear.style.display = 'none';
+            self.ndStart.style.display = 'block';
+            self.clear();
+        });
+    };
+    Timeout.prototype.start = function() {
+        var self = this;
+        var count = this.time;
+        this.interval = window.setInterval(function() {
+            count -= 1;
+            if (count === 0) {
+                count = self.time;
+                self.ndAudio.play();
+            }
+            self.ndTime.innerHTML = count;
+        }, SECOND);
+    };
+    Timeout.prototype.clear = function() {
+        window.clearInterval(this.interval);
+        this.ndTime.innerHTML = this.time;
+    };
+    var timeout = new Timeout({
+        time: 30,
+        ndTime: document.getElementById('time'),
+        ndAudio: document.getElementById('audio'),
+        ndStart: document.getElementById('start'),
+        ndClear: document.getElementById('clear')
+    });
+})(window);
+
+</script>
+
+</body>
+
+</html>
+
